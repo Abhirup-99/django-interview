@@ -6,6 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Meeting Schedule</title>
     {% load static %}
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
+      integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI="
+      crossorigin="anonymous"
+    ></script>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -17,9 +22,102 @@
       integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
       crossorigin="anonymous"
     ></script>
-    <link href="{% static 'index.css' %}" rel="stylesheet" type="text/css" />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"
+      integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css"
+      integrity="sha512-mSYUmp1HYZDFaVKK//63EcZq4iFWFjxSL+Z3T/aCt4IO9Cejm03q3NKKYN6pFQzY0SBOr8h+eCIAZHPXcpZaNw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      href="{% static 'css/index.css' %}"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <script src="{% static 'js/index.js' %}"></script>
   </head>
   <body>
-      
+    <h3 class="text-center p-3">Welcome Admin</h3>
+    <form id="formCreate">
+      {% csrf_token %}
+      <div class="form-group p-3 m-3">
+        <label for="userEmail">Email</label>
+        <input
+          type="email"
+          name="UserEmail"
+          id="userEmail"
+          class="form-control"
+        />
+        <div class="text-center">
+          <button type="button" id="addEmail" class="btn btn-primary mt-3 mr-3">
+            Add email
+          </button>
+        </div>
+      </div>
+      <div class="form-group p-3 m-3">
+        <label for="startTime">Start Time</label>
+        <input
+          type="text"
+          class="form-control datepicker"
+          name="startTime"
+          id="startTime"
+        />
+      </div>
+      <div class="form-group p-3 m-3">
+        <label for="endtime">End Time</label>
+        <input
+          type="text"
+          class="form-control datepicker"
+          name="endTime"
+          id="endTime"
+        />
+      </div>
+      <div class="text-center">
+        <button
+          type="submit"
+          class="btn btn-primary m-3 text-center"
+        >
+          Submit
+        </button>
+      </div>
+    </form>
   </body>
 </html>
+<script>
+  $(".datepicker").datepicker({});
+  const emailData = [];
+  document.getElementById("addEmail").addEventListener("click", () => {
+    emailData.push(document.getElementById("userEmail").value);
+    document.getElementById("userEmail").value = "";
+    console.log(emailData);
+  });
+  $("#formCreate").on("submit", function (event) {
+    console.log("here");
+    event.preventDefault();
+
+    const data = {
+      email: emailData,
+      startTime: document.getElementById("startTime").value,
+      endTime: document.getElementById("endTime").value,
+    };
+    console.log("moving data");
+    fetch("/create",{
+      method: "POST",
+      body: JSON.stringify(data),
+      headers:{
+        "Content-Type":"application/json",
+        "X-CSRFToken": document.cookie.substring(document.cookie.indexOf("=")+1)
+      }
+    }).then(()=>{
+    console.log("hi");
+    }).catch(()=>{
+      console.log("err");
+    });
+  });
+</script>
