@@ -1,6 +1,9 @@
-from typing import Any, Dict, List, Optional, Tuple, TypedDict
+import os
+from typing import Dict, List, Optional, Tuple, TypedDict
 
 from django.db import transaction
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
 
 from .models import Interview, Interviewee, Interviewer
 
@@ -9,6 +12,20 @@ class interviewData(TypedDict):
     email: List[str]
     starttime: int
     endtime: int
+
+
+def sendEmail(emails: List[str]) -> None:
+    message = Mail(
+        from_email="abhiruppalmethodist@gmail.com",
+        to_emails=emails,
+        subject="Interview",
+        html_content="Interview is scheduled.",
+    )
+    try:
+        sg = SendGridAPIClient(os.environ.get("SENDGRID_API_KEY"))
+        sg.send(message)
+    except Exception as e:
+        pass
 
 
 def addInterviews(submitData: interviewData) -> Tuple[Dict[str, str], int]:

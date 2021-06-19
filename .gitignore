@@ -3,3 +3,4 @@ __pycache__
 .vscode
 migrations
 .mypy_cache
+sendgrid.env
