@@ -4,7 +4,9 @@ asgiref==3.3.4
 black==21.6b0
 click==7.1.2
 Django==3.2.4
+-e git+https://github.com/mkurnikov/django-stubs@861c6653fda9a65d8b2fdc8873ff0f5d0a03839d#egg=django_stubs
 gitlint==0.15.1
+mypy==0.711
 mypy-extensions==0.4.3
 pathspec==0.8.1
 python-dateutil==2.8.1
@@ -14,3 +16,5 @@ sh==1.14.1
 six==1.16.0
 sqlparse==0.4.1
 toml==0.10.2
+typed-ast==1.4.3
+typing-extensions==3.10.0.0

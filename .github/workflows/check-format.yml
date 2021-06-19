@@ -18,3 +18,5 @@ jobs:
         run: black --check .
       - name: Run gitlint
         run: gitlint --commits HEAD
+      - name: Run mypy
+        run: mypy .
