@@ -63,6 +63,7 @@ def updateInterview(request: HttpRequest) -> JsonResponse:
         return JsonResponse(dataError[0], status=dataError[1])
     else:
         submitData["email"] = list(set(submitData["email"]))
+        submitData["interviewId"] = interviewId
         interview = Interview.objects.filter(interviewId=interviewId)
         if interview.exists:
             interview.delete()
