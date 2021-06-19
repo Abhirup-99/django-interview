@@ -6,6 +6,7 @@ click==7.1.2
 Django==3.2.4
 -e git+https://github.com/mkurnikov/django-stubs@861c6653fda9a65d8b2fdc8873ff0f5d0a03839d#egg=django_stubs
 gitlint==0.15.1
+isort==5.8.0
 mypy==0.711
 mypy-extensions==0.4.3
 pathspec==0.8.1
