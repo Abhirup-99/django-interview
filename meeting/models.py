@@ -5,9 +5,11 @@ class Interviewee(models.Model):
     name = models.CharField(max_length=200)
     email = models.EmailField()
 
+
 class Interviewer(models.Model):
     name = models.CharField(max_length=200)
     email = models.EmailField()
+
 
 class Interview(models.Model):
     interviewee = models.ForeignKey(Interviewee, on_delete=models.CASCADE)
