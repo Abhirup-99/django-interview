@@ -1,6 +1,6 @@
 import json
 from django.http.request import HttpRequest
-from django.http.response import JsonResponse
+from django.http.response import JsonResponse, HttpResponse
 from django.shortcuts import render
 from .models import Interview
 from .utils import addInterviews, dataChecks
@@ -8,18 +8,18 @@ from django.views.decorators.http import require_POST, require_GET
 
 
 @require_GET
-def indexView(request: HttpRequest):
+def indexView(request: HttpRequest) -> HttpResponse:
     return render(request, "index.html")
 
 
 @require_GET
-def readInterviewsView(request: HttpRequest):
+def readInterviewsView(request: HttpRequest) -> HttpResponse:
     allInterviews = Interview.objects.all().select_related("interviewee")
     return render(request, "interviews.html", context={"allInterviews": allInterviews})
 
 
 @require_GET
-def getInterviewView(request: HttpRequest):
+def getInterviewView(request: HttpRequest) -> JsonResponse:
     interviewId = request.GET.get("interviewId")
     interview = Interview.objects.filter(interviewId=interviewId).select_related(
         "interviewee"
@@ -28,14 +28,14 @@ def getInterviewView(request: HttpRequest):
 
 
 @require_POST
-def updateInterview(request: HttpRequest):
+def updateInterview(request: HttpRequest) -> JsonResponse:
     interviewId = request.GET.get("interviewId")
     submitData = json.loads(request.body)
     dataError = dataChecks(submitData)
     if dataError:
         return JsonResponse(dataError[0], status=dataError[1])
-    submitData["email"] = list(set(submitData["email"]))
-    if interviewId:
+    else:
+        submitData["email"] = list(set(submitData["email"]))
         interview = Interview.objects.filter(interviewId=interviewId)
         if interview.exists:
             interview.delete()
@@ -46,7 +46,7 @@ def updateInterview(request: HttpRequest):
 
 
 @require_POST
-def submitFormView(request: HttpRequest):
+def submitFormView(request: HttpRequest) -> JsonResponse:
     submitData = json.loads(request.body)
     dataError = dataChecks(submitData)
     if dataError:
