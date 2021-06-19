@@ -4,6 +4,7 @@ from typing import Dict, List, Optional, Tuple, TypedDict
 from django.db import transaction
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
+from django.db.models import Q
 
 from .models import Interview, Interviewee, Interviewer
 
@@ -41,15 +42,14 @@ def addInterviews(submitData: interviewData) -> Tuple[Dict[str, str], int]:
         interviewees = Interviewee.objects.select_for_update().filter(email__in=email)
         if len(interviewees) != len(email):
             return ({"status": "failure", "reason": "user email not found"}, 400)
-        interviews = (
-            Interview.objects.filter(interviewee__in=interviewees.values_list("id"))
-            .filter(
-                starttime__gt=starttime,
-                starttime__lt=endtime,
+        interviews = Interview.objects.filter(interviewee__in=interviewees).filter(
+            Q(
+                starttime__gte=starttime,
+                starttime__lte=endtime,
             )
-            .filter(
-                starttime__lt=starttime,
-                endtime__gt=starttime,
+            | Q(
+                starttime__lte=starttime,
+                endtime__gte=starttime,
             )
         )
         interviewer = Interviewer.objects.get(pk=1)
