@@ -79,10 +79,7 @@
         />
       </div>
       <div class="text-center">
-        <button
-          type="submit"
-          class="btn btn-primary m-3 text-center"
-        >
+        <button type="submit" class="btn btn-primary m-3 text-center">
           Submit
         </button>
       </div>
@@ -103,21 +100,29 @@
 
     const data = {
       email: emailData,
-      startTime: document.getElementById("startTime").value,
-      endTime: document.getElementById("endTime").value,
+      starttime: Math.round(
+        new Date(document.getElementById("startTime").value).getTime() / 1000
+      ),
+      endtime: Math.round(
+        new Date(document.getElementById("endTime").value).getTime() / 1000
+      ),
     };
     console.log("moving data");
-    fetch("/create",{
+    fetch("/create", {
       method: "POST",
       body: JSON.stringify(data),
-      headers:{
-        "Content-Type":"application/json",
-        "X-CSRFToken": document.cookie.substring(document.cookie.indexOf("=")+1)
-      }
-    }).then(()=>{
-    console.log("hi");
-    }).catch(()=>{
-      console.log("err");
-    });
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": document.cookie.substring(
+          document.cookie.indexOf("=") + 1
+        ),
+      },
+    })
+      .then(() => {
+        console.log("hi");
+      })
+      .catch(() => {
+        console.log("err");
+      });
   });
 </script>

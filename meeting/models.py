@@ -1,12 +1,17 @@
 from django.db import models
 
 
-class Question(models.Model):
-    question_text = models.CharField(max_length=200)
-    pub_date = models.DateTimeField('date published')
+class Interviewee(models.Model):
+    name = models.CharField(max_length=200)
+    email = models.EmailField()
 
+class Interviewer(models.Model):
+    name = models.CharField(max_length=200)
+    email = models.EmailField()
 
-class Choice(models.Model):
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    choice_text = models.CharField(max_length=200)
-    votes = models.IntegerField(default=0)
+class Interview(models.Model):
+    interviewee = models.ForeignKey(Interviewee, on_delete=models.CASCADE)
+    interviewer = models.ForeignKey(Interviewer, on_delete=models.CASCADE)
+    starttime = models.PositiveIntegerField()
+    endtime = models.PositiveIntegerField()
+    interviewId = models.CharField(max_length=200)

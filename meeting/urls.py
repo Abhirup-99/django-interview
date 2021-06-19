@@ -3,6 +3,9 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path("", views.index, name="index"),
-    path("create", views.submitForm, name="formSubmit"),
+    path("", views.indexView),
+    path("create", views.submitFormView),
+    path("view", views.readInterviewsView),
+    path("update", views.views.updateInterview),
+    path("*", views.indexView),
 ]
