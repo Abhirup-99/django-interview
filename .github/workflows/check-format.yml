@@ -20,3 +20,5 @@ jobs:
         run: gitlint --commits HEAD
       - name: Run mypy
         run: mypy .
+      - name: Run isort
+        run: isort .

@@ -1,6 +1,8 @@
-from typing import Dict, Optional, Tuple, Any, List, TypedDict
+from typing import Any, Dict, List, Optional, Tuple, TypedDict
+
 from django.db import transaction
-from .models import Interviewee, Interview, Interviewer
+
+from .models import Interview, Interviewee, Interviewer
 
 
 class interviewData(TypedDict):

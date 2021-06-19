@@ -1,10 +1,12 @@
 import json
+
 from django.http.request import HttpRequest
-from django.http.response import JsonResponse, HttpResponse
+from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import render
+from django.views.decorators.http import require_GET, require_POST
+
 from .models import Interview
 from .utils import addInterviews, dataChecks
-from django.views.decorators.http import require_POST, require_GET
 
 
 @require_GET
