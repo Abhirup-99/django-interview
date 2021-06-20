@@ -3,13 +3,18 @@ arrow==1.0.3
 asgiref==3.3.4
 black==21.6b0
 click==7.1.2
+dj-database-url==0.5.0
 Django==3.2.4
+django-heroku==0.3.1
 -e git+https://github.com/mkurnikov/django-stubs@861c6653fda9a65d8b2fdc8873ff0f5d0a03839d#egg=django_stubs
 gitlint==0.15.1
+gunicorn==20.1.0
 isort==5.8.0
 mypy==0.711
 mypy-extensions==0.4.3
 pathspec==0.8.1
+psycopg2==2.9.1
+psycopg2-binary==2.9.1
 python-dateutil==2.8.1
 python-http-client==3.3.2
 pytz==2021.1
@@ -22,3 +27,4 @@ starkbank-ecdsa==1.1.1
 toml==0.10.2
 typed-ast==1.4.3
 typing-extensions==3.10.0.0
+whitenoise==5.2.0
