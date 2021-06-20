@@ -7,5 +7,6 @@ urlpatterns = [
     path("create", views.submitFormView),
     path("view", views.readInterviewsView),
     path("update", views.updateInterview),
+    path("read", views.getInterviewView),
     path("*", views.indexView),
 ]

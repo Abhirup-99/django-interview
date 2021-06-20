@@ -12,6 +12,7 @@ class interviewData(TypedDict):
     email: List[str]
     starttime: int
     endtime: int
+    interviewId: str
 
 
 def sendEmail(emails: List[str]) -> None:
@@ -50,8 +51,11 @@ def addInterviews(submitData: interviewData) -> Tuple[Dict[str, str], int]:
                 endtime__gt=starttime,
             )
         )
+        print(interviews)
+        for interview in interviews:
+            print(interview.starttime, interview.id, interview.endtime)
         interviewer = Interviewer.objects.get(pk=1)
-        if not interviews.exists:
+        if interviews.exists and len(interviews) > 0:
             return (
                 {
                     "status": "failure",
@@ -60,7 +64,11 @@ def addInterviews(submitData: interviewData) -> Tuple[Dict[str, str], int]:
                 400,
             )
 
-        interviewId = str(starttime) + email[0]
+        interviewId = (
+            submitData["interviewId"]
+            if submitData.get("interviewId")
+            else str(starttime) + email[0]
+        )
         for interviewee in interviewees:
             newInterview = Interview(
                 interviewee=interviewee,
