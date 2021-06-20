@@ -51,9 +51,6 @@ def addInterviews(submitData: interviewData) -> Tuple[Dict[str, str], int]:
                 endtime__gt=starttime,
             )
         )
-        print(interviews)
-        for interview in interviews:
-            print(interview.starttime, interview.id, interview.endtime)
         interviewer = Interviewer.objects.get(pk=1)
         if interviews.exists and len(interviews) > 0:
             return (
@@ -78,6 +75,7 @@ def addInterviews(submitData: interviewData) -> Tuple[Dict[str, str], int]:
                 interviewId=interviewId,
             )
             newInterview.save()
+        sendEmail(email)
         return ({"status": "success", "interviewId": interviewId}, 200)
 
 

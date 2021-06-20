@@ -47,6 +47,21 @@
       type="text/css"
     />
     <script src="{% static 'js/index.js' %}"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-storage.js"></script>
+    <script>
+      var firebaseConfig = {
+        apiKey: "AIzaSyCFk3ZGYcnjnBEfNwgT0pplU9MeZCb-C-k",
+        authDomain: "awesome-erp-b3002.firebaseapp.com",
+        databaseURL:
+          "https://awesome-erp-b3002-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "awesome-erp-b3002",
+        storageBucket: "awesome-erp-b3002.appspot.com",
+        messagingSenderId: "644148147898",
+        appId: "1:644148147898:web:c74bc062c9d2bbeba9f483",
+      };
+      firebase.initializeApp(firebaseConfig);
+    </script>
   </head>
   <body>
     <h3 class="text-center p-3">Welcome Admin</h3>
@@ -54,7 +69,10 @@
     <form id="formCreate">
       {% csrf_token %}
       <div class="form-group p-3 m-3">
-        <label for="userEmail">Email</label>
+        <label for="userEmail"
+          >Email(write the candidate email and click on Add Email min is
+          2)</label
+        >
         <input
           type="email"
           name="UserEmail"
@@ -74,6 +92,7 @@
           class="form-control datepicker"
           name="startTime"
           id="startTime"
+          required
         />
       </div>
       <div class="form-group p-3 m-3">
@@ -83,6 +102,19 @@
           class="form-control datepicker"
           name="endTime"
           id="endTime"
+          required
+        />
+      </div>
+      <div class="form-group p-3 m-3">
+        <label for="resume">Resume</label>
+        <input
+          type="file"
+          class="form-control btn"
+          name="resume"
+          id="resume"
+          accept="application/pdf"
+          multiple
+          required
         />
       </div>
       <div class="text-center">
@@ -157,6 +189,14 @@
     })
       .then(async (res) => {
         if (res.ok) {
+          const files = document.getElementById("resume").files;
+          const storageRef = firebase.storage().ref();
+          const folder = storageRef.child(
+            `${emailData[0]}${new Date().toString()}`
+          );
+          for (const file of files) {
+            await folder.child(`${file.name}`).put(file);
+          }
           $("#success").modal("show");
         } else {
           const response = await res.json();
@@ -164,7 +204,8 @@
           $("#success").modal("show");
         }
       })
-      .catch(() => {});
+      .catch((err) => {
+      });
   });
   const href = window.location.href;
   if (href.indexOf("=") !== -1) {
@@ -177,10 +218,6 @@
         if (res.status === "failure") {
           return;
         }
-        console.log(res.starttime, typeof res.starttime);
-        console.log(
-          new Date(res.starttime * 1000).toISOString().substring(0, 10)
-        );
         document.getElementById("endTime").value = new Date(res.endtime * 1000)
           .toISOString()
           .substring(0, 10);

@@ -1,6 +1,5 @@
 import json
 
-from django.core import serializers
 from django.http.request import HttpRequest
 from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import render
@@ -29,7 +28,6 @@ def getInterviewView(request: HttpRequest) -> JsonResponse:
     interviews = Interview.objects.filter(interviewId=interviewId).select_related(
         "interviewee"
     )
-    print(interviews)
     if not interviews.exists():
         return JsonResponse({"status": "failure"}, status=400)
     interview = {
@@ -38,7 +36,6 @@ def getInterviewView(request: HttpRequest) -> JsonResponse:
         "endtime": interviews[0].endtime,
         "emails": [interview.interviewee.email for interview in interviews],
     }
-    print(interview)
     return JsonResponse(interview)
 
 
