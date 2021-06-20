@@ -33,3 +33,7 @@ The emails are sent through Sendgrid API, and the file uploads are powered by Fi
 - Run `source venv/bin/activate`.
 - Run `pip install -r requirements.txt`.
 - Finally serve the application using `python manage.py runserver` :).
+
+## Note
+
+Emails might go into spam. Please check that folder also.

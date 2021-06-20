@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 
 from django.http.request import HttpRequest
 from django.http.response import HttpResponse, JsonResponse
@@ -7,7 +8,6 @@ from django.views.decorators.http import require_GET, require_POST
 
 from .models import Interview
 from .utils import addInterviews, dataChecks
-from datetime import datetime
 
 
 @require_GET

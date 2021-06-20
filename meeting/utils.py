@@ -16,6 +16,7 @@ class interviewData(TypedDict):
 
 
 def sendEmail(emails: List[str]) -> None:
+    print(emails)
     message = Mail(
         from_email="abhiruppalmethodist@gmail.com",
         to_emails=emails,
@@ -26,7 +27,7 @@ def sendEmail(emails: List[str]) -> None:
         sg = SendGridAPIClient(os.environ.get("SENDGRID_API_KEY"))
         sg.send(message)
     except Exception as e:
-        pass
+        print(e)
 
 
 def addInterviews(submitData: interviewData) -> Tuple[Dict[str, str], int]:
