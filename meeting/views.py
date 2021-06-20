@@ -7,6 +7,7 @@ from django.views.decorators.http import require_GET, require_POST
 
 from .models import Interview
 from .utils import addInterviews, dataChecks
+from datetime import datetime
 
 
 @require_GET
@@ -17,8 +18,22 @@ def indexView(request: HttpRequest) -> HttpResponse:
 @require_GET
 def readInterviewsView(request: HttpRequest) -> HttpResponse:
     allInterviews = Interview.objects.all().select_related("interviewee")
+    interviewList = []
+    for interview in allInterviews:
+        interviewList.append(
+            {
+                "starttime": datetime.fromtimestamp(interview.starttime).strftime(
+                    "%m/%d/%Y"
+                ),
+                "endtime": datetime.fromtimestamp(interview.endtime).strftime(
+                    "%m/%d/%Y"
+                ),
+                "interviewId": interview.interviewId,
+                "email": interview.interviewee.email,
+            }
+        )
     return render(
-        request, "readInterview.html", context={"allInterviews": allInterviews}
+        request, "readInterview.html", context={"allInterviews": interviewList}
     )
 
 
@@ -28,7 +43,7 @@ def getInterviewView(request: HttpRequest) -> JsonResponse:
     interviews = Interview.objects.filter(interviewId=interviewId).select_related(
         "interviewee"
     )
-    if not interviews.exists():
+    if not interviews.exists() or len(interviews) == 0:
         return JsonResponse({"status": "failure"}, status=400)
     interview = {
         "status": "success",
