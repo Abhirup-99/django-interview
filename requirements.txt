@@ -4,7 +4,7 @@ asgiref==3.3.4
 black==21.6b0
 click==7.1.2
 dj-database-url==0.5.0
-Django==3.2.4
+Django==3.2.14
 django-heroku==0.3.1
 -e git+https://github.com/mkurnikov/django-stubs@861c6653fda9a65d8b2fdc8873ff0f5d0a03839d#egg=django_stubs
 gitlint==0.15.1
